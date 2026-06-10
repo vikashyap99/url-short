@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics — <%= shortId %></title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 40px 20px;
+    }
+    .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); width: 100%; max-width: 640px; }
+    h1 { font-size: 24px; margin-bottom: 4px; color: #1a1a2e; }
+    .sub { color: #666; font-size: 14px; margin-bottom: 24px; word-break: break-all; }
+    .stats { display: flex; gap: 16px; margin-bottom: 24px; }
+    .stat-card { flex: 1; background: #fafafa; border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px; text-align: center; }
+    .stat-card .value { font-size: 32px; font-weight: 700; color: #4f6ef7; }
+    .stat-card .label { font-size: 13px; color: #888; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .section-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 12px; }
+    .click-list { list-style: none; }
+    .click-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+    .click-item:last-child { border-bottom: none; }
+    .click-item .time { color: #888; font-size: 13px; }
+    .click-item .meta { color: #333; max-width: 60%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .empty { text-align: center; color: #bbb; font-size: 14px; padding: 24px 0; }
+    .footer { margin-top: 20px; text-align: center; font-size: 13px; color: #999; }
+    .footer a { color: #4f6ef7; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 Analytics</h1>
+    <p class="sub">/<%= shortId %> → <%= redirectUrl %></p>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="value"><%= totalClicks %></div>
+        <div class="label">Total Clicks</div>
+      </div>
+      <div class="stat-card">
+        <div class="value"><%= recentClicks.length %></div>
+        <div class="label">Recent (last 100)</div>
+      </div>
+    </div>
+
+    <div class="section-title">Recent Clicks</div>
+
+    <% if (recentClicks.length === 0) { %>
+      <div class="empty">No clicks yet. Share your link!</div>
+    <% } else { %>
+      <ul class="click-list">
+        <% recentClicks.forEach(function(click) { %>
+          <li class="click-item">
+            <span class="meta"><%= click.userAgent ? click.userAgent.substring(0, 50) + (click.userAgent.length > 50 ? '...' : '') : 'Unknown' %></span>
+            <span class="time"><%= new Date(click.timestamp).toLocaleString() %></span>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+
+    <div class="footer">
+      <a href="/">← Shorten another</a>
+    </div>
+  </div>
+</body>
+</html>

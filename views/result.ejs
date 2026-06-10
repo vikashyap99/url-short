@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Created!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    }
+    .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); width: 100%; max-width: 520px; text-align: center; }
+    h1 { font-size: 24px; margin-bottom: 8px; color: #1a1a2e; }
+    .badge { display: inline-block; background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+    .url-box { background: #fafafa; border: 1px solid #e8e8e8; border-radius: 8px; padding: 16px; margin-bottom: 20px; word-break: break-all; }
+    .url-box .label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .url-box .short-url { font-size: 20px; font-weight: 700; color: #4f6ef7; }
+    .url-box .original { font-size: 13px; color: #666; margin-top: 8px; }
+    .actions { display: flex; gap: 10px; }
+    .actions a, .actions button {
+      flex: 1; padding: 10px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; text-align: center;
+    }
+    .btn-primary { background: #4f6ef7; color: #fff; border: none; }
+    .btn-primary:hover { background: #3b57d9; }
+    .btn-secondary { background: #fff; color: #333; border: 1px solid #d9d9d9; }
+    .btn-secondary:hover { background: #fafafa; }
+    .expiry { font-size: 13px; color: #999; margin-top: 12px; }
+    .footer { margin-top: 20px; font-size: 13px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="badge">✓ URL Created Successfully</div>
+    <h1>Your short link is ready</h1>
+
+    <div class="url-box">
+      <div class="label">Short URL</div>
+      <div class="short-url"><a href="<%= shortUrl %>" target="_blank"><%= shortUrl %></a></div>
+      <div class="original">→ <%= redirectUrl %></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="navigator.clipboard.writeText('<%= shortUrl %>').then(() => this.textContent='Copied!').catch(() => {})">Copy Link</button>
+      <a href="/analytics/<%= shortId %>" class="btn-secondary">Analytics</a>
+    </div>
+
+    <% if (expiresAt) { %>
+      <div class="expiry">Expires on <%= new Date(expiresAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></div>
+    <% } %>
+
+    <div class="footer"><a href="/">Shorten another</a></div>
+  </div>
+</body>
+</html>

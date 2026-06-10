@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f0f2f5;
+      display: flex; justify-content: center; align-items: center; min-height: 100vh;
+    }
+    .container { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); width: 100%; max-width: 520px; }
+    h1 { font-size: 24px; margin-bottom: 8px; color: #1a1a2e; }
+    p.sub { color: #666; margin-bottom: 24px; font-size: 14px; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: 600; color: #333; margin-bottom: 6px; }
+    input[type="url"], input[type="text"], input[type="number"] {
+      width: 100%; padding: 10px 14px; border: 1px solid #d9d9d9; border-radius: 8px;
+      font-size: 15px; outline: none; transition: border-color 0.2s;
+    }
+    input:focus { border-color: #4f6ef7; }
+    .row { display: flex; gap: 12px; }
+    .row .form-group { flex: 1; }
+    button {
+      width: 100%; padding: 12px; background: #4f6ef7; color: #fff; border: none;
+      border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+    }
+    button:hover { background: #3b57d9; }
+    .error { background: #fff1f0; border: 1px solid #ff4d4f; color: #cf1322; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; display: none; }
+    .info { font-size: 13px; color: #888; margin-top: 4px; }
+    .footer { margin-top: 20px; text-align: center; font-size: 13px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>✂️ URL Shortener</h1>
+    <p class="sub">Paste a long URL and get a short, shareable link</p>
+
+    <% if (locals.error) { %>
+      <div class="error" style="display:block"><%= error %></div>
+    <% } %>
+
+    <form action="/shorten" method="POST">
+      <div class="form-group">
+        <label for="redirectUrl">Destination URL</label>
+        <input type="url" id="redirectUrl" name="redirectUrl" placeholder="https://example.com/very/long/url" required>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="customAlias">Custom alias (optional)</label>
+          <input type="text" id="customAlias" name="customAlias" placeholder="my-link" pattern="[a-zA-Z0-9_-]{4,20}">
+          <div class="info">4–20 characters (letters, numbers, -, _)</div>
+        </div>
+        <div class="form-group">
+          <label for="expiresInDays">Expires in (optional)</label>
+          <input type="number" id="expiresInDays" name="expiresInDays" placeholder="30" min="1" max="365">
+          <div class="info">Days (1–365)</div>
+        </div>
+      </div>
+
+      <button type="submit">Shorten URL</button>
+    </form>
+
+    <div class="footer">
+      <a href="/">Home</a>
+    </div>
+  </div>
+</body>
+</html>
