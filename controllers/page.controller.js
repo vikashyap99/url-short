@@ -1,9 +1,20 @@
 import { urlService } from "../services/url.service.js";
+import { URL } from "../models/url.model.js";
+import { Click } from "../models/click.model.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export async function renderHome(req, res, next) {
   try {
-    res.render("index", { error: null });
+    const urls = await URL.find({ isActive: true }).sort({ createdAt: -1 }).lean();
+
+    const urlsWithClicks = await Promise.all(
+      urls.map(async (url) => {
+        const clickCount = await Click.countDocuments({ shortId: url.shortId });
+        return { ...url, clickCount };
+      }),
+    );
+
+    res.render("index", { error: null, urls: urlsWithClicks });
   } catch (error) {
     next(error);
   }
